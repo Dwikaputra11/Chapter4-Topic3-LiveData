@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -91,6 +90,11 @@ class HomeFragment : Fragment() {
             it.id == id
         } as  Product
         bundle.putParcelable("product_details", product)
-        Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_detailFragment, bundle)
+        val fragment = DetailFragment()
+        fragment.arguments = bundle
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.addToBackStack(null)
+        transaction?.replace(R.id.frContainer, fragment)
+        transaction?.commit()
     }
 }
