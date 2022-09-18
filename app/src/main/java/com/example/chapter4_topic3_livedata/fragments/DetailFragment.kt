@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.chapter4_topic3_livedata.R
@@ -26,13 +28,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val product = arguments?.getParcelable<Product>("product_details") as Product
-        Glide.with(binding.root)
-            .load(product.img)
-            .placeholder(R.mipmap.ic_launcher_round)
-            .into(binding.ivImageItem)
-        binding.tvDescItem.text = product.desc
-        binding.tvNameItem.text = product.name
-        binding.tvPriceItem.text = product.price.toString()
+        binding.product = product
         binding.btnOrderNow.setOnClickListener {
             val sendIntent = Intent()
             val message = "Hello. This is Dwika, I want to ask product: ${product.name}, is still available?"
@@ -42,7 +38,17 @@ class DetailFragment : Fragment() {
             sendIntent.setPackage("com.whatsapp")
             startActivity(sendIntent)
         }
+    }
 
+    companion object{
+        @JvmStatic
+        @BindingAdapter("productImage")
+        fun loadImage(view: ImageView, productImage: String){
+            Glide.with(view.context)
+                .load(productImage)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(view)
+        }
     }
 
 }
